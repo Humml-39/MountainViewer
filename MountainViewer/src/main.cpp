@@ -5,7 +5,7 @@ void setup() {
 }
 
 
-void loop(test) {
+void loop(test=1){
   623b998ae10eff98afb77a0247ca00572c55b1f1
   // put your main code here, to run repeatedly:
   Serial.print("ddffd");
