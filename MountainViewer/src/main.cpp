@@ -14,50 +14,37 @@ void loop(){
 }*/
 
 #include <NMEAGPS.h>
-
 #include <GPSport.h>
-
 #include <Streamers.h>
 
 
-static NMEAGPS  gps;
-
-static gps_fix  fix;
-
-
-static void doSomeWork()
-{
-  // Print all the things!
-
-  trace_all( DEBUG_PORT, gps, fix );
-
-} // doSomeWork
-
-static void GPSloop()
-{
-  while (gps.available( gpsPort )) {
-    fix = gps.read();
-    doSomeWork();
-  }
-
-} // GPSloop
-
+NMEAGPS  gps; // This parses the GPS characters
+gps_fix  fix; // This holds on to the latest values
 
 void setup()
 {
   DEBUG_PORT.begin(9600);
-  while (!DEBUG_PORT)
+  while (!Serial)
     ;
+  DEBUG_PORT.print( F("Let's GO!\n") );
 
-
-  trace_header( DEBUG_PORT );
-  DEBUG_PORT.flush();
-
-  gpsPort.begin( 9600 );
+  gpsPort.begin(9600);
 }
 
+//--------------------------
 
 void loop()
 {
-  GPSloop();
+  while (gps.available( gpsPort )) {
+    fix = gps.read();
+
+    DEBUG_PORT.print( F("Location: ") );
+    if (fix.valid.location) {
+      DEBUG_PORT.print( fix.latitude(), 6 );
+      DEBUG_PORT.print( ',' );
+      DEBUG_PORT.print( fix.longitude(), 6 );
+    }
+
+    DEBUG_PORT.println();
+  }
 }
