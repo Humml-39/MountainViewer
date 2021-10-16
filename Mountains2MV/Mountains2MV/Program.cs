@@ -31,25 +31,80 @@ namespace Mountains2MV
 
                 length++;
             }
-             //*****Ausgabe*********
-            for(int i=0; i<length; i++)
-            {
-                Console.WriteLine(name[i] + "|" + lon[i] + "|" + lat[i] + "|" + alt[i]);
-            }
-            Console.WriteLine("Zum Beenden drücken");
-            Console.Read();
-
+            /*//*****Ausgabe*********
+           for(int i=0; i<length; i++)
+           {
+               Console.WriteLine(name[i] + "|" + lon[i] + "|" + lat[i] + "|" + alt[i]);
+           }
+           Console.WriteLine("Zum Beenden drücken");
+           Console.Read();
+           */
             _serialPort = new SerialPort();
             _serialPort.PortName = "COM10";//Set your board COM 
             _serialPort.BaudRate = 9600;
             _serialPort.Open();
+            string d, a;
+            //_serialPort.Write("Start,");
+            //Console.WriteLine(_serialPort.ReadLine());
             while (true)
             {
-                _serialPort.Write("Hello World");
-                string a = _serialPort.ReadExisting();
-                Console.WriteLine(a);
-                Thread.Sleep(200);
+                d = _serialPort.ReadLine();
+                Console.WriteLine(d);
+                if (d == "Start\r")
+                {      
+                    for (int i = 0; i < length; i++)
+                    {
+                        _serialPort.Write("st,");
+
+                        _serialPort.Write(name[i]);
+                        _serialPort.Write(",");
+                        a = _serialPort.ReadLine();
+                        Console.WriteLine(a);
+                        _serialPort.Write(lon[i]);
+                        _serialPort.Write(",");
+                        a = _serialPort.ReadLine();
+                        Console.WriteLine(a);
+                        _serialPort.Write(lat[i]);
+                        _serialPort.Write(",");
+                        a = _serialPort.ReadLine();
+                        Console.WriteLine(a);
+                        _serialPort.Write(alt[i]);
+                        _serialPort.Write(",");
+                        a = _serialPort.ReadLine();
+                        Console.WriteLine(a);
+                        _serialPort.Write(name[i]);
+                        _serialPort.Write(",");
+                        a = _serialPort.ReadLine();
+                        Console.WriteLine(a);
+                        _serialPort.Write(lon[i]);
+                        _serialPort.Write(",");
+                        a = _serialPort.ReadLine();
+                        Console.WriteLine(a);
+                        _serialPort.Write(lat[i]);
+                        _serialPort.Write(",");
+                        a = _serialPort.ReadLine();
+                        Console.WriteLine(a);
+                        _serialPort.Write(alt[i]);
+                        _serialPort.Write(",");
+                        a = _serialPort.ReadLine();
+                        Console.WriteLine(a);
+                        a = _serialPort.ReadLine();
+                        Console.WriteLine(a);
+
+                        if (a != "OK\r")
+                        {
+                            i--;
+                            Thread.Sleep(1000);
+                        }
+                        
+                    }
+                    break;
+                }
             }
+            Console.WriteLine();
+            Console.WriteLine("Click any button to close");
+            Console.Read();
+            
         }
 
     }
