@@ -48,12 +48,10 @@ void setup() {
   // unless that's what you want...rather, you can batch up a bunch of
   // drawing operations and then update the screen all at once by calling
   // display.display(). These examples demonstrate both approaches...
-  testdrawchar(2,0,0,"Spar spar");      // Draw characters of the default font
+  //testdrawchar(2,0,0,"Spar spar");      // Draw characters of the default font
   
 }
 
-void loop() {
-}
 
 void testdrawchar(char Textsize,char cursor1, char cursor2, String buchstabe) {
   char x=buchstabe.length()+1;    //lenge des Strings von 1 beginend
