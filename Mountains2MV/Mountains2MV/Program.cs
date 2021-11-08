@@ -11,44 +11,62 @@ namespace Mountains2MV
         {
 
             Console.WriteLine("Reading CSV...");
+            Console.WriteLine("Finished!");
+            Console.WriteLine("----------------------------");
             int length = 0;
-            var reader = new StreamReader(File.OpenRead(@"C:\Users\johih\Downloads\vorarlberg_clean.csv"));
-            List<string> name = new List<string>();
-            List<string> lon = new List<string>();
-            List<string> lat = new List<string>();
-            List<string> alt = new List<string>();
-            while (!reader.EndOfStream)
+            Console.WriteLine("Data Source (CSV):");
+            string path1 = Console.ReadLine();
+            try
             {
-                var line = reader.ReadLine();
-                var values = line.Split(',');
+                var reader = new StreamReader(File.OpenRead(@path1));
 
-                name.Add(values[0]);
-                lon.Add(values[1]);
-                lat.Add(values[2]);
-                alt.Add(values[3]);
+                List<string> name = new List<string>();
+                List<string> lon = new List<string>();
+                List<string> lat = new List<string>();
+                List<string> alt = new List<string>();
+                while (!reader.EndOfStream)
+                {
+                    var line = reader.ReadLine();
+                    var values = line.Split(',');
 
-                length++;
+                    name.Add(values[0]);
+                    lon.Add(values[1]);
+                    lat.Add(values[2]);
+                    alt.Add(values[3]);
+
+                    length++;
+                }
+                Console.WriteLine("Where 2 Save:");
+                string path = Console.ReadLine() + "\\mountains.cpp";
+                //string path = @"D:\mountains.cpp";
+
+                StreamWriter writer = new StreamWriter(@path);
+
+                writer.WriteLine("#include \"mountains.h\"");
+                writer.WriteLine("#include \"arduino.h\"");
+                writer.WriteLine("");
+                writer.WriteLine("int mountains_length = " + length + ";");
+                writer.WriteLine("");
+                writer.WriteLine("mountain mountains[] = {");
+
+                for (int i = 0; i < length; i++)
+                {
+                    writer.WriteLine("    {\"" + name[i] + "\"," + lat[i] + "," + lon[i] + "," + alt[i] + "},");
+                }
+
+                writer.WriteLine("};");
+                writer.Close();
+
+                Console.WriteLine("mountains.cpp has been created");
+                Console.ReadKey();
             }
-            string path = @"D:\mountains.cpp";
-
-            StreamWriter writer = new StreamWriter(path);
-
-            writer.WriteLine("#include \"mountains.h\"");
-            writer.WriteLine("#include \"arduino.h\"");
-            writer.WriteLine("");
-            writer.WriteLine("int mountains_length = 12;");
-            writer.WriteLine("");
-            writer.WriteLine("mountain mountains[] = {");
-
-            for(i)
-            writer.WriteLine("    {"+name+","+lon+","+lat+","+alt+"},");
-
-            writer.Close();
-
-            Console.WriteLine("mountains.cpp has been created");
-
-
-        }
+    
+            catch
+            {
+                Console.Write("Invalid Path");
+                Console.ReadKey();
+            }
+}
 
     }
 }
