@@ -1,12 +1,17 @@
 #include <Arduino.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+#include <SPI.h>
+#include <Wire.h>
+#include ""
+
+
 
 void setup() {
-  Serial.begin(9600);
+
+  testdrawchar(2,0,0,"Spar spar");      // Draw characters of the default font
+  
 }
 
-
-void loop(){
-  //623b998ae10eff98afb77a0247ca00572c55b1f1
-  // put your main code here, to run repeatedly:
-  Serial.print("ddffd");
+void loop() {
 }

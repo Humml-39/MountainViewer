@@ -1,8 +1,11 @@
 #include <Arduino.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
+#include <SPI.h>
+#include <Wire.h>
+#include "disp.h"
 
-void testdrawchar(void) ;
+void testdrawchar(char Textsize,char cursor1, char cursor2, String buchstabe);
 
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 32 // OLED display height, in pixels
@@ -45,29 +48,29 @@ void setup() {
   // unless that's what you want...rather, you can batch up a bunch of
   // drawing operations and then update the screen all at once by calling
   // display.display(). These examples demonstrate both approaches...
-
-  testdrawchar();      // Draw characters of the default font
+  testdrawchar(2,0,0,"Spar spar");      // Draw characters of the default font
   
 }
 
 void loop() {
 }
 
-void testdrawchar(void) {
-  display.clearDisplay();
+void testdrawchar(char Textsize,char cursor1, char cursor2, String buchstabe) {
+  char x=buchstabe.length()+1;    //lenge des Strings von 1 beginend
+  char buf[buchstabe.length()];   //Char array erstellen
+  
+  display.clearDisplay();   //Dislay clearen
 
-  display.setTextSize(2);      // Normal 1:1 pixel scale
+  display.setTextSize(Textsize);        //Textgröße auswählen
   display.setTextColor(SSD1306_WHITE); // Draw white text
-  display.setCursor(0, 0);     // Start at top-left corner
-  display.cp437(true);         // Use full 256 char 'Code Page 437' font
+  display.setCursor(cursor1, cursor2);  //cursor auf position x y setzen
 
-  // Not all the characters will fit on the display. This is normal.
-  // Library will draw what it can and the rest will be clipped.
-  for(int16_t i=0; i<256; i++) {
-    if(i == '\n') display.write(' ');
-    else          display.write(i);
+  buchstabe.toCharArray(buf,x); //Sring in Char array umwandel
+  for (int16_t i = 0; i <= buchstabe.length(); i++) //für jedes zeichen ausgeben
+  {
+    display.write(buf[i]);
   }
 
-  display.display();
+  display.display();  //Text im Display ausgeben
   delay(2000);
 }
