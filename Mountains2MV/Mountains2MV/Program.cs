@@ -7,12 +7,10 @@ namespace Mountains2MV
 {
     class Program
     {
-        
-        static SerialPort _serialPort;
         public static void Main()
         {
-        
 
+            Console.WriteLine("Reading CSV...");
             int length = 0;
             var reader = new StreamReader(File.OpenRead(@"C:\Users\johih\Downloads\vorarlberg_clean.csv"));
             List<string> name = new List<string>();
@@ -31,80 +29,25 @@ namespace Mountains2MV
 
                 length++;
             }
-            /*//*****Ausgabe*********
-           for(int i=0; i<length; i++)
-           {
-               Console.WriteLine(name[i] + "|" + lon[i] + "|" + lat[i] + "|" + alt[i]);
-           }
-           Console.WriteLine("Zum Beenden drücken");
-           Console.Read();
-           */
-            _serialPort = new SerialPort();
-            _serialPort.PortName = "COM10";//Set your board COM 
-            _serialPort.BaudRate = 9600;
-            _serialPort.Open();
-            string d, a;
-            //_serialPort.Write("Start,");
-            //Console.WriteLine(_serialPort.ReadLine());
-            while (true)
-            {
-                d = _serialPort.ReadLine();
-                Console.WriteLine(d);
-                if (d == "Start\r")
-                {      
-                    for (int i = 0; i < length; i++)
-                    {
-                        _serialPort.Write("st,");
+            string path = @"D:\mountains.cpp";
 
-                        _serialPort.Write(name[i]);
-                        _serialPort.Write(",");
-                        a = _serialPort.ReadLine();
-                        Console.WriteLine(a);
-                        _serialPort.Write(lon[i]);
-                        _serialPort.Write(",");
-                        a = _serialPort.ReadLine();
-                        Console.WriteLine(a);
-                        _serialPort.Write(lat[i]);
-                        _serialPort.Write(",");
-                        a = _serialPort.ReadLine();
-                        Console.WriteLine(a);
-                        _serialPort.Write(alt[i]);
-                        _serialPort.Write(",");
-                        a = _serialPort.ReadLine();
-                        Console.WriteLine(a);
-                        _serialPort.Write(name[i]);
-                        _serialPort.Write(",");
-                        a = _serialPort.ReadLine();
-                        Console.WriteLine(a);
-                        _serialPort.Write(lon[i]);
-                        _serialPort.Write(",");
-                        a = _serialPort.ReadLine();
-                        Console.WriteLine(a);
-                        _serialPort.Write(lat[i]);
-                        _serialPort.Write(",");
-                        a = _serialPort.ReadLine();
-                        Console.WriteLine(a);
-                        _serialPort.Write(alt[i]);
-                        _serialPort.Write(",");
-                        a = _serialPort.ReadLine();
-                        Console.WriteLine(a);
-                        a = _serialPort.ReadLine();
-                        Console.WriteLine(a);
+            StreamWriter writer = new StreamWriter(path);
 
-                        if (a != "OK\r")
-                        {
-                            i--;
-                            Thread.Sleep(1000);
-                        }
-                        
-                    }
-                    break;
-                }
-            }
-            Console.WriteLine();
-            Console.WriteLine("Click any button to close");
-            Console.Read();
-            
+            writer.WriteLine("#include \"mountains.h\"");
+            writer.WriteLine("#include \"arduino.h\"");
+            writer.WriteLine("");
+            writer.WriteLine("int mountains_length = 12;");
+            writer.WriteLine("");
+            writer.WriteLine("mountain mountains[] = {");
+
+            for(i)
+            writer.WriteLine("    {"+name+","+lon+","+lat+","+alt+"},");
+
+            writer.Close();
+
+            Console.WriteLine("mountains.cpp has been created");
+
+
         }
 
     }
