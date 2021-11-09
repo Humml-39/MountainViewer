@@ -12,12 +12,15 @@ gps_fix  fix; // This holds on to the latest values
 
 void setup()
 {
+
+  // GPS
   DEBUG_PORT.begin(9600);
   while (!Serial)
     ;
   DEBUG_PORT.print( F("Let's GO!\n") );
 
   gpsPort.begin(9600);
+  // ------------
 }
 /*
 //String berge[];
@@ -27,6 +30,7 @@ void loop(){
 */
 void loop()
 {
+  // GPS
   while (gps.available( gpsPort )) {
     fix = gps.read();
 
@@ -38,5 +42,7 @@ void loop()
     }
 
     DEBUG_PORT.println();
+
+  // ------------
   }
 }
