@@ -1,17 +1,5 @@
 #include <Arduino.h>
-/*#include <NMEAGPS.h>
-#include <GPSport.h>
-#include <Streamers.h>
-static NMEAGPS  gps;
-static gps_fix  fix;
 
-void setup() {
-  Serial1.begin(9600);
-}
-void loop(){
-  // put your main code here, to run repeatedly:
-
-}*/
 
 #include <NMEAGPS.h>
 #include <GPSport.h>
