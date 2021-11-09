@@ -5,7 +5,7 @@ void setup() {
   Serial.begin(9600);
 }
 
-String berge[];
+//String berge[];
 void loop(){
-  mountains[0].name;
+  //mountains[0].name;
 }
