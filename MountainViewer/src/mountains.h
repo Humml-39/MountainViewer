@@ -5,8 +5,8 @@
 typedef struct 
 {
     char *name;
-    int psoX;
-    int posY;
+    double posX;
+    double posY;
     int height;
 }mountain;
 
