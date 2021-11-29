@@ -16,6 +16,32 @@ void setup() {
   delay(10);
   compi.CMPS_init(); //initialize the compass
   
+#include <mountains.h>
+
+
+#include <NMEAGPS.h>
+#include <GPSport.h>
+#include <Streamers.h>
+
+#include <SPI.h>
+#include <Wire.h>
+#include <Disp.h>
+
+NMEAGPS  gps; // This parses the GPS characters
+gps_fix  fix; // This holds on to the latest values
+
+void setup()
+{
+  setup2();
+  testdrawchar(2,0,0,"Spar spar");      // Draw characters of the default font
+  // GPS
+  DEBUG_PORT.begin(9600);
+  while (!Serial)
+    ;
+  DEBUG_PORT.print( F("Let's GO!\n") );
+
+  gpsPort.begin(9600);
+  // ------------
 }
 
 void loop() {
