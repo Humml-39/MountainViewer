@@ -8,12 +8,13 @@
 //float CMPS2_getHeading(void);
 //void CMPS2_read_XYZ(void);
 //void CMPS2_init(void);
-
+Compass compi;
 void setup() {
+  
   Serial.begin(9600,SERIAL_8N1); //serial initialization
   Wire.setClock(10000);
   delay(10);
-  Compass.CMPS_init(); //initialize the compass
+  compi.CMPS_init(); //initialize the compass
   
 }
 
@@ -21,11 +22,12 @@ void loop() {
   delay(250);
   
   //retrieving and displaying the heading of the compass
-  float angle = CMPS_getHeading();
+  float angle = compi.CMPS_decodeHeading();
   Serial.print("Heading = ");
   Serial.print(angle);
   Serial.print("°");
   Serial.print('\t');
 
+  
   Compass.CMPS_decodeHeading(angle);  //get direction
 }
