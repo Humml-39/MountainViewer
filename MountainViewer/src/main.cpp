@@ -11,7 +11,7 @@
 
 NMEAGPS  gps; // This parses the GPS characters
 gps_fix  fix; // This holds on to the latest values
-Compass compi;
+
 
 void setup()
 {
