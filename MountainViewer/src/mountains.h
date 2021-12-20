@@ -10,7 +10,7 @@ typedef struct
     int height;
 }mountain;
 
-extern mountain mountains[];
+extern mountain mountainss[];
 extern int mountains_length;
 
 #endif

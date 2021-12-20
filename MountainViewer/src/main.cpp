@@ -1,13 +1,14 @@
 #include <Wire.h> //including library for I2C communication
 #include <Arduino.h>
 #include <CMPS2.h>
+#include <Mymath.h>
 #include <mountains.h>
 #include <NMEAGPS.h>
 #include <Streamers.h>
 #include <SPI.h>
 #include <Disp.h>
 #include <math.h>
-#include <My_math.h>
+
 
 #include <GPSport.h>
 

@@ -1,5 +1,5 @@
-#ifndef MY_MATH_H
-    #define MY_MATH_H 
+#ifndef MYMATH_H
+    #define MYMATH_H 
     
     typedef struct 
     {
