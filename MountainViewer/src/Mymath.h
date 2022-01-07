@@ -9,7 +9,7 @@
         int height;
     }mountain_new;
      
-    extern mountain_new mountains_new[];
+    extern mountain_new mountains_new[50];
     extern void new_array(double X_Me,double Y_Me);
 
 

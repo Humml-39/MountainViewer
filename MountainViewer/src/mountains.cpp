@@ -3,7 +3,7 @@
 
 int mountains_length = 854;
 
-mountain mountainss[] = {
+mountain mountains[] = {
     {"Braunarlspitze",47.2294962,10.0643311,2649},
     {"Damülser Mittagsspitze",47.3103707,9.8839009,2095},
     {"Karhorn",47.2481561,10.1512026,2416},
