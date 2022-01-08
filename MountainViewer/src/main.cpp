@@ -22,8 +22,11 @@ void setup()
   Serial.begin(9600); // Serial Com
   new_array(47.272125,9.631086);
   Serial.print("\nberechnung fertig");
-  String namem = mountains_new[1].name;
-  Serial.print(namem);
+  int berg = auswertung(175);
+  Serial.print("\n");
+  Serial.print(mountains_new[berg].name);
+  Serial.print("\n");
+  Serial.print(mountains_new[berg].height);
   delay(10);
   CMPS_init(); //initialize the compass
   setup2();

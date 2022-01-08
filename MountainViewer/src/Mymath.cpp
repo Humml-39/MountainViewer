@@ -4,7 +4,8 @@
 #include "mountains.h"
 
 void new_array(double X_Me,double Y_Me);
-void auswertung(double angel);
+int auswertung(double angel);
+int k = 0;
 
 mountain_new mountains_new[];
 
@@ -14,8 +15,10 @@ void new_array(double X_Me,double Y_Me){
     double phi;
     double X_Berg;
     double Y_Berg;
-    int k =0;
+    
     double temp0,temp1;
+
+    k=0;
 
     for (int i=0;i<854;i++){
         X_Berg = mountains[i].posX;
@@ -68,7 +71,15 @@ void new_array(double X_Me,double Y_Me){
     }
 }
 
-void auswertung(double angel){
-
+int auswertung(double angel){
+    double zw = abs(mountains_new[0].phi-angel);
+    int Berg;
+    for(int i=1;i<k;i++){
+        if(abs(mountains_new[i].phi-angel)<zw){
+            zw = abs(mountains_new[i].phi-angel);
+            Berg = i;
+        }
+    }
+    return Berg;
 
 }

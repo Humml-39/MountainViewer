@@ -11,6 +11,7 @@
      
     extern mountain_new mountains_new[50];
     extern void new_array(double X_Me,double Y_Me);
+    extern int auswertung(double angel);
 
 
 #endif
