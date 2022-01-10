@@ -72,10 +72,10 @@ void new_array(double X_Me,double Y_Me){
 }
 
 int auswertung(double angel){
-    double zw = abs(mountains_new[0].phi-angel);
+    double zw = 360;
     int Berg;
-    for(int i=1;i<k;i++){
-        if(abs(mountains_new[i].phi-angel)<zw){
+    for(int i=0;i<k;i++){
+        if((abs(mountains_new[i].phi-angel)<zw)&&(mountains_new[i].abstand>0.001)){
             zw = abs(mountains_new[i].phi-angel);
             Berg = i;
         }

@@ -5,7 +5,7 @@
 #include <Wire.h>
 #include "disp.h"
 
-void testdrawchar(char Textsize,char cursor1, char cursor2, String buchstabe);
+void Print_on_display(char Textsize,char cursor1, char cursor2, String buchstabe);
 
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 32 // OLED display height, in pixels
@@ -59,7 +59,7 @@ void testdrawchar(char Textsize,char cursor1, char cursor2, String buchstabe);
 #define SCREEN_ADDRESS 0x3C ///< See datasheet for Address; 0x3D for 128x64, 0x3C for 128x32
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
-void setup2() {
+void setup_display() {
   Serial.begin(9600);
 
   // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
@@ -89,7 +89,7 @@ void setup2() {
 }
 
 
-void testdrawchar(char Textsize,char cursor1, char cursor2, String buchstabe) {
+void Print_on_display(char Textsize,char cursor1, char cursor2, String buchstabe) {
   char x=buchstabe.length()+1;    //lenge des Strings von 1 beginend
   char buf[buchstabe.length()];   //Char array erstellen
   

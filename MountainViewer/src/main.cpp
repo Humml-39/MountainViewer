@@ -22,14 +22,14 @@ void setup()
   Serial.begin(9600); // Serial Com
   new_array(47.272125,9.631086);
   Serial.print("\nberechnung fertig");
-  int berg = auswertung(175);
+  int berg = auswertung(110);
   Serial.print("\n");
   Serial.print(mountains_new[berg].name);
   Serial.print("\n");
   Serial.print(mountains_new[berg].height);
   delay(10);
   CMPS_init(); //initialize the compass
-  setup2();
+  setup_display();
   //testdrawchar(2,0,0,"Spar spar");      // Draw characters of the default font
   // GPS
   
@@ -64,7 +64,7 @@ void loop() {
   Serial.print("°");
   Serial.print('\t');
   String anglesss = String(angle,3);
-  testdrawchar(2,0,0,anglesss);
+  Print_on_display(2,0,0,anglesss);
   CMPS_decodeHeading(angle);  //get direction
 
 }

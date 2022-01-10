@@ -2,8 +2,8 @@
     #define DISP_H 
     
 
-     extern void testdrawchar(char Textsize,char cursor1, char cursor2, String buchstabe);
-     extern void setup2();
+     extern void Print_on_display(char Textsize,char cursor1, char cursor2, String buchstabe);
+     extern void setup_display();
 
     
 #endif
