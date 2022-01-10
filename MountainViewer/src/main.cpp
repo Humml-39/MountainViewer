@@ -33,11 +33,11 @@ void setup()
   //testdrawchar(2,0,0,"Spar spar");      // Draw characters of the default font
   // GPS
   
-  while (!Serial)
+  while (!DEBUG_PORT)
     ;
-  Serial.print( F("Let's GO!\n") );
+  DEBUG_PORT.print( F("Let's GO!\n") );
 
-  gpsPort.begin(9600); // Serial GPS
+  gpsPort.begin(9600); // DEBUG_PORT GPS
   // ------------
 }
 
@@ -59,12 +59,19 @@ void loop() {
 
   //retrieving and displaying the heading of the compass
   float angle = CMPS_getHeading();
-  Serial.print("Heading = ");
-  Serial.print(angle);
-  Serial.print("°");
-  Serial.print('\t');
+  DEBUG_PORT.print("Heading = ");
+  DEBUG_PORT.print(angle);
+  DEBUG_PORT.print("°");
+  DEBUG_PORT.print('\t');
   String anglesss = String(angle,3);
   Print_on_display(2,0,0,anglesss);
   CMPS_decodeHeading(angle);  //get direction
 
+
+  DEBUG_PORT.print("\nberechnung fertig");
+  int berg = auswertung(angle);
+  DEBUG_PORT.print("\n");
+  DEBUG_PORT.print(mountains_new[berg].name);
+  DEBUG_PORT.print("\n");
+  DEBUG_PORT.print(mountains_new[berg].height);
 }
