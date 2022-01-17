@@ -19,8 +19,12 @@ void new_array(double X_Me,double Y_Me){
     double temp0,temp1;
 
     k=0;
+    mountains_new[0].name="no Berg";
+    mountains_new[0].phi=360;
+    mountains_new[0].height=0;
+    mountains_new[0].abstand=1000;
 
-    for (int i=0;i<854;i++){
+    for (int i=1;i<854;i++){
         X_Berg = mountains[i].posX;
         Y_Berg = mountains[i].posY;
         abstand = sqrt(pow(abs(X_Berg-X_Me),2)+pow(abs(Y_Berg-Y_Me),2));
@@ -67,17 +71,28 @@ void new_array(double X_Me,double Y_Me){
         Serial.print(mountains_new[i].name);
         Serial.print("  ");
         Serial.print(mountains_new[i].phi);
+        Serial.print(" ");
+        Serial.print(mountains_new[i].abstand);
         Serial.print("\n");
     }
+
+
+
 }
 
 int auswertung(double angel){
-    double zw = 360;
-    int Berg;
-    for(int i=0;i<k;i++){
+    double zw = abs(mountains_new[0].phi-angel),zwa=200;
+    int Berg=0,bergalt;
+    for(int i=1;i<k;i++){
         if((abs(mountains_new[i].phi-angel)<zw)&&(mountains_new[i].abstand>0.001)){
             zw = abs(mountains_new[i].phi-angel);
+            bergalt=Berg;
+            zwa=mountains_new[bergalt].abstand;
             Berg = i;
+            if((abs(mountains_new[bergalt].phi-angel)<3)&&(mountains_new[i].abstand>zwa)){
+                zw=abs(mountains_new[bergalt].phi-angel);
+                Berg=bergalt;
+            }
         }
     }
     return Berg;

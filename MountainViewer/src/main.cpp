@@ -22,7 +22,7 @@ void setup()
   Serial.begin(9600); // Serial Com
   new_array(47.272125,9.631086);
   Serial.print("\nberechnung fertig");
-  int berg = auswertung(110);
+  int berg = auswertung(10);
   Serial.print("\n");
   Serial.print(mountains_new[berg].name);
   Serial.print("\n");
