@@ -14,7 +14,7 @@ Dipl.-Ing. Stüttler Christoph
 - Entwicklungboard: Arduino Due
 - GPS-Modul: GY-GPS6MV2
 - Kompassmodul: Pmod CMPS2
-- Display: Adafruit xxxxxxxx
+- Display: SSD1306
 
 ## Programme:
 Die oben angeführten Programme sind für folgende Tätigkeit da:
