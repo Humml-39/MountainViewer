@@ -19,14 +19,14 @@ gps_fix  fix; // This holds on to the latest values
 void setup()
 {
   
-  Serial.begin(9600); // Serial Com
+  DEBUG_PORT.begin(9600); // DEBUG_PORT Com
   new_array(47.272125,9.631086);
-  Serial.print("\nberechnung fertig");
+  DEBUG_PORT.print("\nberechnung fertig");
   int berg = auswertung(110);
-  Serial.print("\n");
-  Serial.print(mountains_new[berg].name);
-  Serial.print("\n");
-  Serial.print(mountains_new[berg].height);
+  DEBUG_PORT.print("\n");
+  DEBUG_PORT.print(mountains_new[berg].name);
+  DEBUG_PORT.print("\n");
+  DEBUG_PORT.print(mountains_new[berg].height);
   delay(10);
   CMPS_init(); //initialize the compass
   setup_display();
@@ -64,12 +64,10 @@ void loop() {
   DEBUG_PORT.print("°");
   DEBUG_PORT.print('\t');
   String anglesss = String(angle,3);
-  Print_on_display(2,0,0,anglesss);
   CMPS_decodeHeading(angle);  //get direction
-
-
   DEBUG_PORT.print("\nberechnung fertig");
   int berg = auswertung(angle);
+  Print_on_display(2,0,0,anglesss+"\n"+mountains_new[berg].name);
   DEBUG_PORT.print("\n");
   DEBUG_PORT.print(mountains_new[berg].name);
   DEBUG_PORT.print("\n");

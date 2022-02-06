@@ -70,7 +70,7 @@ void setup_display() {
 
   // Show initial display buffer contents on the screen --
   // the library initializes this with an Adafruit splash screen.
-
+  display.setRotation(2);
   display.clearDisplay();
   display.drawBitmap((SCREEN_WIDTH - splash_width) / 2, (SCREEN_HEIGHT - splash_height) / 2,splash_data, splash_width, splash_height, 1);
   display.display();
@@ -106,5 +106,5 @@ void Print_on_display(char Textsize,char cursor1, char cursor2, String buchstabe
   }
 
   display.display();  //Text im Display ausgeben
-  delay(2000);
+  delay(100);
 }
