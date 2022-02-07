@@ -5,7 +5,9 @@
 #include <Wire.h>
 #include "disp.h"
 
-void Print_on_display(char Textsize,char cursor1, char cursor2, String buchstabe);
+void to_display(char Textsize,char cursor1, char cursor2, String buchstabe);
+void print_disp();
+void clear_disp();
 
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 32 // OLED display height, in pixels
@@ -70,7 +72,7 @@ void setup_display() {
 
   // Show initial display buffer contents on the screen --
   // the library initializes this with an Adafruit splash screen.
-
+  display.setRotation(2);
   display.clearDisplay();
   display.drawBitmap((SCREEN_WIDTH - splash_width) / 2, (SCREEN_HEIGHT - splash_height) / 2,splash_data, splash_width, splash_height, 1);
   display.display();
@@ -89,15 +91,16 @@ void setup_display() {
 }
 
 
-void Print_on_display(char Textsize,char cursor1, char cursor2, String buchstabe) {
+void to_display(char Textsize,char cursor1, char cursor2, String buchstabe) {
   char x=buchstabe.length()+1;    //lenge des Strings von 1 beginend
   char buf[buchstabe.length()];   //Char array erstellen
   
-  display.clearDisplay();   //Dislay clearen
+  //display.clearDisplay();   //Dislay clearen
 
   display.setTextSize(Textsize);        //Textgröße auswählen
   display.setTextColor(SSD1306_WHITE); // Draw white text
   display.setCursor(cursor1, cursor2);  //cursor auf position x y setzen
+  display.cp437(true);
 
   buchstabe.toCharArray(buf,x); //Sring in Char array umwandel
   for (int16_t i = 0; i <= buchstabe.length(); i++) //für jedes zeichen ausgeben
@@ -105,6 +108,9 @@ void Print_on_display(char Textsize,char cursor1, char cursor2, String buchstabe
     display.write(buf[i]);
   }
 
-  display.display();  //Text im Display ausgeben
+  //display.display();  //Text im Display ausgeben
   delay(2000);
 }
+
+void print_disp(){display.display();}
+void clear_disp(){display.clearDisplay();}

@@ -30,6 +30,7 @@ void setup()
   delay(10);
   CMPS_init(); //initialize the compass
   setup_display();
+  
   //testdrawchar(2,0,0,"Spar spar");      // Draw characters of the default font
   // GPS
   
@@ -64,12 +65,17 @@ void loop() {
   DEBUG_PORT.print("°");
   DEBUG_PORT.print('\t');
   String anglesss = String(angle,3);
-  Print_on_display(2,0,0,anglesss);
+  int berg = auswertung(angle);
+  String nameb = mountains_new[berg].name;
+  clear_disp();
+  to_display(1.5,10,10,nameb);
+  to_display(1.5,10,20,String(mountains_new[berg].height));
+  print_disp();
+
   CMPS_decodeHeading(angle);  //get direction
 
 
   DEBUG_PORT.print("\nberechnung fertig");
-  int berg = auswertung(angle);
   DEBUG_PORT.print("\n");
   DEBUG_PORT.print(mountains_new[berg].name);
   DEBUG_PORT.print("\n");
