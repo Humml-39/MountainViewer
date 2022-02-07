@@ -38,7 +38,7 @@ void setup()
     ;
   DEBUG_PORT.print( F("Let's GO!\n") );
 
-  gpsPort.begin(9600); // DEBUG_PORT GPS
+  gpsPort.begin(9600); // Serial GPS
   // ------------
 }
 
