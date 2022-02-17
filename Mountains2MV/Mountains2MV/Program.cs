@@ -9,13 +9,13 @@ namespace Mountains2MV
     {
         public static void Main()
         {
-
-            Console.WriteLine("Reading CSV...");
-            Console.WriteLine("Finished!");
-            Console.WriteLine("----------------------------");
+            Console.WriteLine("Welcome to Mountain2MV");
+            Console.WriteLine("----------------------");
             int length = 0;
             Console.WriteLine("Data Source (CSV):");
             string path1 = Console.ReadLine();
+
+            Console.WriteLine("finished reading CSV");
             try
             {
                 var reader = new StreamReader(File.OpenRead(@path1));
@@ -36,7 +36,7 @@ namespace Mountains2MV
 
                     length++;
                 }
-                Console.WriteLine("Where 2 Save:");
+                Console.WriteLine("Where to Save:");
                 string path = Console.ReadLine() + "\\mountains.cpp";
                 //string path = @"D:\mountains.cpp";
 
@@ -66,7 +66,7 @@ namespace Mountains2MV
                 Console.Write("Invalid Path");
                 Console.ReadKey();
             }
-}
+        }
 
     }
 }
