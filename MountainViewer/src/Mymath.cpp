@@ -24,7 +24,7 @@ void new_array(double X_Me,double Y_Me){
     mountains_new[0].height=0;
     mountains_new[0].abstand=1000;
 
-    for (int i=1;i<854;i++){
+    for (int i=1;i<1900;i++){
         X_Berg = mountains[i].posX;
         Y_Berg = mountains[i].posY;
         abstand = sqrt(pow(abs(X_Berg-X_Me),2)+pow(abs(Y_Berg-Y_Me),2));
