@@ -1,65 +1,66 @@
-#define DECLINATION 4.55 // declination (in degrees).
+//Based on: "Using Digilent PMOD CMPS2 on Arduino" by banitama
+//https://create.arduino.cc/projecthub/banitama/using-digilent-pmod-cmps2-on-arduino-a2e340
 
-/************************************************************************/
-
-#include <Wire.h> //including library for I2C communication
-
+#include <Wire.h> //Arduino I²C Library
 #include "CMPS2.h"
 
-unsigned char CMPS2_address = 0x30; //I2C Caddress of the device
+#define declination 3.4 // Deklination in Grad
 
-float data[3];
-unsigned int raw[3];
+unsigned char CMPS2_address = 0x30; // Adresse des CMPS2
+
+unsigned int raw[3]; //Variable für die so empfangenen Daten
+float data[3]; //Variable für die laut Datenblatt in mG umgewandelten Daten
 float offset[3];
+//Größe von [3], da -> X,Y,z
 
-
+ //Umwandlung Grad -> Himmelsrichtung laut Datenblatt
 void CMPS_decodeHeading(float angle) {
-  //decoding heading angle according to datasheet
+  
   if (angle > 337.25 | angle < 22.5) {
-    Serial.println("North");
+    Serial.println("Nord");
   }
   else if (angle > 292.5) {
-    Serial.println("North-West");
+    Serial.println("Nord-West");
   }
   else if (angle > 247.5) {
     Serial.println("West");
   }
   else if (angle > 202.5) {
-    Serial.println("South-West");
+    Serial.println("Süd-West");
   }
   else if (angle > 157.5) {
-    Serial.println("South");
+    Serial.println("Süd");
   }
   else if (angle > 112.5) {
-    Serial.println("South-East");
+    Serial.println("Süd-Ost");
   }
   else if (angle > 67.5) {
-    Serial.println("East");
+    Serial.println("Ost");
   }
   else {
-    Serial.println("North-East");
+    Serial.println("Nord-Ost");
   }
+
 }
 
 void CMPS_read_XYZ(void);
 
 float CMPS_getHeading(void) {
-  CMPS_read_XYZ();  //read X, Y, Z data of the magnetic field
+  CMPS_read_XYZ();  //Auslesen der X,Y,Z - Werte des magnetometer
 
-  //eliminate offset before continuing
+  //Offset entfernen
   for (int i=0;i<3;i++)
   {
     data[i] = data[i]-offset[i];
   }
   
-  //variables for storing partial results
+  // Variablen für die temporären Ergebnisse
   float temp0 = 0;
   float temp1 = 0;
-  //and for storing the final result
-  float deg = 0;
 
-  //calculate heading from data of the magnetic field
-  //the formula is different in each quadrant
+  float deg = 0; //Variable für das Ergebnis
+
+  //Für die Berechnung der Richtung muss berücksichtigt werden in welchem Quadrant sich die Blickrichung befindetet.
   if (data[0] < 0)
   {
     if (data[1] > 0)
@@ -71,7 +72,7 @@ float CMPS_getHeading(void) {
     }
     else
     {
-      //Quadrant 2
+      //Quadrant 4
       temp0 = -data[1];
       temp1 = -data[0];
       deg = 90 + atan(temp0 / temp1) * (180 / 3.14159);
@@ -87,16 +88,16 @@ float CMPS_getHeading(void) {
     }
     else
     {
-      //Quadrant 4
+      //Quadrant 2
       temp0 = data[1];
       temp1 = data[0];
       deg = 270 + atan(temp0 / temp1) * (180 / 3.14159);
     }
   }
 
-  //correct heading
-  deg += DECLINATION;
-  if (DECLINATION > 0)
+  //Richtungskorrektur
+  deg += declination;
+  if (declination > 0)
   {
     if (deg > 360) {
       deg -= 360;
@@ -112,45 +113,44 @@ float CMPS_getHeading(void) {
   return deg;
 }
 
-//reads measurements in mG
+//liest die Messung in mG
 void CMPS_read_XYZ(void) {
-  //initialize array for data
 
-  //command internal control register 0 bit 0 (measure)
+  //control register 0 bit 0 (measure)
   Wire.beginTransmission(CMPS2_address);
   Wire.write(0x07);
   Wire.write(0x01);
   Wire.endTransmission();
   delay(8);
 
-  //wait for measurement to be completed
+  //warten bis Messung fertig
   bool flag = false;
   while (!flag) {
-    //jump to status register
+
     Wire.beginTransmission(CMPS2_address);
-    Wire.write(0x06);
+    Wire.write(0x06); //Status Register
     Wire.endTransmission();
 
-    //read its value
+    //Auslesen
     Wire.requestFrom(CMPS2_address, (uint8_t)1);
     int temporal = 0;
     if (Wire.available()) {
       temporal = Wire.read();
     }
 
-    //if the last bit is 1, data is ready
+    //ist das letzte Bit 1?
     temporal &= 1;
     if (temporal != 0) {
       flag = true;
     }
   }
 
-  //move CMPS2_address pointer to first CMPS2_address
+  //der Erste Wert auslesen
   Wire.beginTransmission(CMPS2_address);
   Wire.write(0x00);
   Wire.endTransmission();
 
-  //save data
+  //Daten abspeichern
   Wire.requestFrom(CMPS2_address, (uint8_t)6);
   byte tmp[6] = {0, 0, 0, 0, 0, 0}; //array for raw data
   if (Wire.available()) {
@@ -159,25 +159,23 @@ void CMPS_read_XYZ(void) {
     }
   }
 
-  //reconstruct raw data
+  //LSB mit MSB zusammenführen
   raw[0] = tmp[1] << 8 | tmp[0]; //x
   raw[1] = tmp[3] << 8 | tmp[2]; //y
   raw[2] = tmp[5] << 8 | tmp[4]; //z
 
-  //convert raw data to mG
+  //in mG umrechnen
   for (int i = 0; i < 3; i++) {
     data[i] = 0.48828125 * (float)raw[i];
   }
 }
 
-//initialize the compass
-//Update: this should follow Calibration steps
 void CMPS_init(void) {
   float out1[3];
   float out2[3];
   int i;
   
-  Wire.begin(); // initialization of I2C bus
+  Wire.begin(); // I²C initialisieren
 
   //calibration: SET
   Wire.beginTransmission(CMPS2_address);
@@ -230,20 +228,20 @@ void CMPS_init(void) {
   Serial.print("\t");
   Serial.println(raw[2]);
 
-  //offset calculation
+  //offset berechnen
   for (i=0;i<3;i++)
   {
-    offset[i] = (out1[i]+out2[i])*0.5;
+    offset[i] = (out1[i]+out2[i])*0.5; //Offset entfernen laut Datenblatt
   } 
 
-  //command internal control register 0 for set operation
+  //control register 0 für SET
   Wire.beginTransmission(CMPS2_address);
   Wire.write(0x07);
   Wire.write(0x40); //SET
   Wire.endTransmission();
   delay(10);
 
-  //command internal control register 1 to 16 bit resolution, 8ms measurement time
+  //control register 1 bis 16 bit auflösung, 8ms messzeit
   Wire.beginTransmission(CMPS2_address);
   Wire.write(0x08); 
   Wire.write(0x00);
