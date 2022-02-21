@@ -76,11 +76,11 @@ void setup_display() {
   display.clearDisplay();
   display.drawBitmap((SCREEN_WIDTH - splash_width) / 2, (SCREEN_HEIGHT - splash_height) / 2,splash_data, splash_width, splash_height, 1);
   display.display();
-  delay(2000); // Pause for 2 seconds
+  delay(200); // Pause for 2 seconds
   
   // Clear the buffer
   display.clearDisplay();
-  delay(2000);
+  delay(200);
 
   // display.display() is NOT necessary after every single drawing command,
   // unless that's what you want...rather, you can batch up a bunch of
@@ -109,7 +109,7 @@ void to_display(char Textsize,char cursor1, char cursor2, String buchstabe) {
   }
 
   //display.display();  //Text im Display ausgeben
-  delay(2000);
+  
 }
 
 void print_disp(){display.display();}

@@ -12,15 +12,28 @@
 
 #include <GPSport.h>
 
+void modi_kompass();
+void modi_normal();
+void modi_Uhrzeit();
+
 NMEAGPS  gps; // This parses the GPS characters
 gps_fix  fix; // This holds on to the latest values
+
+double angle;
+
+String nameb;
+
+int berg;
+int modi = 0;
+int Tasterpin = 22;
+
 
 
 void setup()
 {
   
   Serial.begin(9600); // Serial Com
-  new_array(47.272125,9.631086);
+  
   Serial.print("\nberechnung fertig");
   int berg = auswertung(10);
   Serial.print("\n");
@@ -39,45 +52,124 @@ void setup()
   DEBUG_PORT.print( F("Let's GO!\n") );
 
   gpsPort.begin(9600); // Serial GPS
-  // ------------
+  clear_disp();
+  to_display(1.5,10,10,"Bitte etwas Geduld");
+  to_display(1.5,10,20,"Satellit suchen");
+  print_disp();
+  
+  
+  while (!fix.valid.location)
+  {
+    while (gps.available( gpsPort )) {
+      fix = gps.read();
+      
+      DEBUG_PORT.print( F("Location: ") );
+      if (fix.valid.location) {
+        DEBUG_PORT.print( fix.latitude(), 6 );
+        DEBUG_PORT.print( ',' );
+        DEBUG_PORT.print( fix.longitude(), 6 );
+          
+      }
+
+    }
+  }
+  
+    
+
+  new_array(fix.latitude(),fix.longitude());
+
+  pinMode(Tasterpin,INPUT);
+  digitalWrite(Tasterpin,HIGH);  
 }
 
 void loop() {
   
   delay(250);
   
-  while (gps.available( gpsPort )) {
-    fix = gps.read();
-
-    DEBUG_PORT.print( F("Location: ") );
-    if (fix.valid.location) {
-      DEBUG_PORT.print( fix.latitude(), 6 );
-      DEBUG_PORT.print( ',' );
-      DEBUG_PORT.print( fix.longitude(), 6 );
-    }
-
-  }
 
   //retrieving and displaying the heading of the compass
-  float angle = CMPS_getHeading();
-  DEBUG_PORT.print("Heading = ");
-  DEBUG_PORT.print(angle);
-  DEBUG_PORT.print("°");
-  DEBUG_PORT.print('\t');
-  String anglesss = String(angle,3);
-  int berg = auswertung(angle);
-  String nameb = mountains_new[berg].name;
+  angle = CMPS_getHeading();
+  
+  berg = auswertung(angle);
+  nameb = mountains_new[berg].name;
+  
+  if(digitalRead(Tasterpin)==LOW){
+    modi++;
+    delay(200);
+    if(modi == 4){
+      modi = 0;
+    }
+  }
+  DEBUG_PORT.print(modi);
+  if(modi == 0){
+    modi_normal();
+  }
+  else if(modi == 1){
+    modi_kompass();
+  }
+  else{
+    modi_Uhrzeit();
+  }
+
+
+}
+
+void modi_kompass(){
+  clear_disp();
+  
+  if (337.5<angle||angle <22.5)
+  {
+    to_display(1.5,10,10,"N");
+  }
+  else if (angle<=67.5)
+  {
+    to_display(1.5,10,10,"N/O");
+  }
+  else if (angle<=112.5)
+  {
+    to_display(1.5,10,10,"O");
+  }
+  else if (angle<=157.5)
+  {
+    to_display(1.5,10,10,"S/O");
+  }
+  else if (angle<=202.5)
+  {
+    to_display(1.5,10,10,"S");
+  }
+  else if (angle<=247.5)
+  {
+    to_display(1.5,10,10,"S/W");
+  }
+  else if (angle<=292.5)
+  {
+    to_display(1.5,10,10,"W");
+  }
+  else //if (292.5<angle||angle<=337.5)
+  {
+    to_display(1.5,10,10,"N/W");
+  }
+  
+
+  to_display(1.5,10,20,String(angle));
+  print_disp();
+
+}
+
+void modi_normal(){
+  
   clear_disp();
   to_display(1.5,10,10,nameb);
   to_display(1.5,10,20,String(mountains_new[berg].height));
   print_disp();
 
-  CMPS_decodeHeading(angle);  //get direction
-
-
-  DEBUG_PORT.print("\nberechnung fertig");
-  DEBUG_PORT.print("\n");
-  DEBUG_PORT.print(mountains_new[berg].name);
-  DEBUG_PORT.print("\n");
-  DEBUG_PORT.print(mountains_new[berg].height);
 }
+
+void modi_Uhrzeit(){
+  clear_disp();
+  to_display(1.5,10,10,"Uhrzeit!!");
+  to_display(1.5,10,20,"MV - V 0.9");
+  print_disp();
+
+}
+
