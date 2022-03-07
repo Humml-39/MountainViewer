@@ -27,7 +27,9 @@ int berg;
 int modi = 0;
 int Tasterpin = 22;
 
-
+int hours = 0;
+int minutes = 0;
+String Uhrzeit = "0:0";
 
 void setup()
 {
@@ -52,6 +54,7 @@ void setup()
   DEBUG_PORT.print( F("Let's GO!\n") );
 
   gpsPort.begin(9600); // Serial GPS
+  
   clear_disp();
   to_display(1.5,10,10,"Bitte etwas Geduld");
   to_display(1.5,10,20,"Satellit suchen");
@@ -63,19 +66,20 @@ void setup()
     while (gps.available( gpsPort )) {
       fix = gps.read();
       
-      DEBUG_PORT.print( F("Location: ") );
+      /*DEBUG_PORT.print( F("Location: ") );
       if (fix.valid.location) {
         DEBUG_PORT.print( fix.latitude(), 6 );
         DEBUG_PORT.print( ',' );
         DEBUG_PORT.print( fix.longitude(), 6 );
           
-      }
+      }*/
 
     }
   }
-  
-    
-
+      
+  hours = fix.dateTime.hours;
+  minutes = fix.dateTime.minutes;
+  Uhrzeit = String(hours) + ":" + String(minutes);
   new_array(fix.latitude(),fix.longitude());
 
   pinMode(Tasterpin,INPUT);
@@ -85,6 +89,11 @@ void setup()
 void loop() {
   
   delay(250);
+
+  //GPS Routine
+  while (gps.available( gpsPort )) {
+    fix = gps.read();
+  }
   
 
   //retrieving and displaying the heading of the compass
@@ -167,7 +176,7 @@ void modi_normal(){
 
 void modi_Uhrzeit(){
   clear_disp();
-  to_display(1.5,10,10,"Uhrzeit!!");
+  to_display(1.5,10,10,Uhrzeit);
   to_display(1.5,10,20,"MV - V 0.9");
   print_disp();
 
