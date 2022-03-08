@@ -9,11 +9,11 @@ void to_display(char Textsize,char cursor1, char cursor2, String buchstabe);
 void print_disp();
 void clear_disp();
 
-#define SCREEN_WIDTH 128 // OLED display width, in pixels
-#define SCREEN_HEIGHT 32 // OLED display height, in pixels
+#define SCREEN_WIDTH 128 // OLED display weite, in pixelen
+#define SCREEN_HEIGHT 32 // OLED display höhe, in pixelen
 
-#define splash_width 120      //115
-#define splash_height 32       //32
+#define splash_width 120      //Splash weite
+#define splash_height 32       //Splash Höhe
 
   const uint8_t PROGMEM splash_data [] = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x20, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
@@ -51,42 +51,30 @@ void clear_disp();
   };
 
 
-
-// Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
-// The pins for I2C are defined by the Wire-library. 
-// On an arduino UNO:       A4(SDA), A5(SCL)
-// On an arduino MEGA 2560: 20(SDA), 21(SCL)
-// On an arduino LEONARDO:   2(SDA),  3(SCL), ...
 #define OLED_RESET     4 // Reset pin # (or -1 if sharing Arduino reset pin)
-#define SCREEN_ADDRESS 0x3C ///< See datasheet for Address; 0x3D for 128x64, 0x3C for 128x32
+#define SCREEN_ADDRESS 0x3C // 0x3C für ein Display der Größe 128x32
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 void setup_display() {
   Serial.begin(9600);
 
-  // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
+  // SSD1306_SWITCHCAPVCC = Intern 3.3V für das Display generieren
   if(!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
     Serial.println(F("SSD1306 allocation failed"));
-    for(;;); // Don't proceed, loop forever
+    for(;;); // Nicht weitergehen, unendlich wiederholen
   }
 
-  // Show initial display buffer contents on the screen --
-  // the library initializes this with an Adafruit splash screen.
-  display.setRotation(2);
-  display.clearDisplay();
+  
+  display.setRotation(2);   //Bildschirminhalt um 180 drehen
+  display.clearDisplay();   //Display leeren
+  //Logo Mountainviewer als Zeichenkette übergeben
   display.drawBitmap((SCREEN_WIDTH - splash_width) / 2, (SCREEN_HEIGHT - splash_height) / 2,splash_data, splash_width, splash_height, 1);
-  display.display();
+  display.display();  //Bitmap darstellen
   delay(200); // Pause for 2 seconds
   
-  // Clear the buffer
+  // buffer leeren
   display.clearDisplay();
   delay(200);
-
-  // display.display() is NOT necessary after every single drawing command,
-  // unless that's what you want...rather, you can batch up a bunch of
-  // drawing operations and then update the screen all at once by calling
-  // display.display(). These examples demonstrate both approaches...
-  //testdrawchar(2,0,0,"Spar spar");      // Draw characters of the default font
   
 }
 
@@ -95,10 +83,9 @@ void to_display(char Textsize,char cursor1, char cursor2, String buchstabe) {
   char x=buchstabe.length()+1;    //lenge des Strings von 1 beginend
   char buf[buchstabe.length()];   //Char array erstellen
   
-  //display.clearDisplay();   //Dislay clearen
-
+  
   display.setTextSize(Textsize);        //Textgröße auswählen
-  display.setTextColor(SSD1306_WHITE); // Draw white text
+  display.setTextColor(SSD1306_WHITE); // weißer text ausgeben
   display.setCursor(cursor1, cursor2);  //cursor auf position x y setzen
   display.cp437(true);
 
@@ -108,9 +95,7 @@ void to_display(char Textsize,char cursor1, char cursor2, String buchstabe) {
     display.write(buf[i]);
   }
 
-  //display.display();  //Text im Display ausgeben
-  
 }
 
-void print_disp(){display.display();}
-void clear_disp(){display.clearDisplay();}
+void print_disp(){display.display();}       //Display ausgabe funktion
+void clear_disp(){display.clearDisplay();}  //Cleaer Display funktion
