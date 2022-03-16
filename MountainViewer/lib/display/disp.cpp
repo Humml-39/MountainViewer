@@ -10,12 +10,12 @@ void print_disp();
 void clear_disp();
 
 #define SCREEN_WIDTH 128 // OLED display weite, in pixelen
-#define SCREEN_HEIGHT 32 // OLED display höhe, in pixelen
+#define SCREEN_HEIGHT 32 // OLED display höhe, in pixelen //const uint8_t PROGMEM splash_data [] = {
 
 #define splash_width 120      //Splash weite
 #define splash_height 32       //Splash Höhe
 
-  const uint8_t PROGMEM splash_data [] = {
+  const uint8_t PROGMEM Mountainviewer_logo [] = {  
   0x00, 0x00, 0x00, 0x00, 0x00, 0x20, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
   0x00, 0x00, 0x05, 0x00, 0x00, 0x78, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x60, 0x00, 
   0x00, 0x00, 0x0f, 0x80, 0x00, 0x78, 0x38, 0x00, 0x00, 0x00, 0x00, 0x60, 0x00, 0x40, 0x00, 
@@ -68,9 +68,9 @@ void setup_display() {
   display.setRotation(2);   //Bildschirminhalt um 180 drehen
   display.clearDisplay();   //Display leeren
   //Logo Mountainviewer als Zeichenkette übergeben
-  display.drawBitmap((SCREEN_WIDTH - splash_width) / 2, (SCREEN_HEIGHT - splash_height) / 2,splash_data, splash_width, splash_height, 1);
+  display.drawBitmap((SCREEN_WIDTH - splash_width) / 2, (SCREEN_HEIGHT - splash_height) / 2,Mountainviewer_logo, splash_width, splash_height, 1);
   display.display();  //Bitmap darstellen
-  delay(200); // Pause for 2 seconds
+  delay(2000); // Pause for 2 seconds
   
   // buffer leeren
   display.clearDisplay();
