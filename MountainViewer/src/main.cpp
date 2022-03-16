@@ -8,9 +8,11 @@
 #include <SPI.h>
 #include <Disp.h>
 #include <math.h>
-
+#include <rtc_clock.h>
 
 #include <GPSport.h>
+
+RTC_clock rtc_clock(XTAL);
 
 void modi_kompass();
 void modi_normal();
@@ -35,16 +37,12 @@ void setup()
 {
   
   Serial.begin(9600); // Serial Com
-  
-  Serial.print("\nberechnung fertig");
-  int berg = auswertung(10);
-  Serial.print("\n");
-  Serial.print(mountains_new[berg].name);
-  Serial.print("\n");
-  Serial.print(mountains_new[berg].height);
+
   delay(10);
   CMPS_init(); //initialize the compass
   setup_display();
+  
+  rtc_clock.init();
   
   //testdrawchar(2,0,0,"Spar spar");      // Draw characters of the default font
   // GPS
@@ -52,7 +50,7 @@ void setup()
   while (!DEBUG_PORT)
     ;
   DEBUG_PORT.print( F("Let's GO!\n") );
-
+  
   gpsPort.begin(9600); // Serial GPS
   
   clear_disp();
@@ -76,27 +74,34 @@ void setup()
 
     }
   }
-      
+
+   
+   
+  
   hours = fix.dateTime.hours;
   minutes = fix.dateTime.minutes;
-  Uhrzeit = String(hours) + ":" + String(minutes);
-  new_array(fix.latitude(),fix.longitude());
+  new_array(fix.latitude(),fix.longitude()); 
+
+  rtc_clock.set_time(hours, minutes,0);
 
   pinMode(Tasterpin,INPUT);
   digitalWrite(Tasterpin,HIGH);  
 }
 
+
 void loop() {
-  
+
   delay(250);
 
   //GPS Routine
+  
   while (gps.available( gpsPort )) {
     fix = gps.read();
   }
   
 
   //retrieving and displaying the heading of the compass
+  
   angle = CMPS_getHeading();
   
   berg = auswertung(angle);
@@ -119,7 +124,8 @@ void loop() {
   else{
     modi_Uhrzeit();
   }
-
+  
+  
 
 }
 
@@ -176,7 +182,7 @@ void modi_normal(){
 
 void modi_Uhrzeit(){
   clear_disp();
-  to_display(1.5,10,10,Uhrzeit);
+  to_display(1.5,10,10,rtc_clock.get_hours()+":"+rtc_clock.get_minutes());
   to_display(1.5,10,20,"MV - V 0.9");
   print_disp();
 
