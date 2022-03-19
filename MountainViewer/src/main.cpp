@@ -79,7 +79,7 @@ void setup()
    
   
   hours = fix.dateTime.hours;
-  minutes = fix.dateTime.minutes;
+  minutes = fix.dateTime.minutes; 
   new_array(fix.latitude(),fix.longitude()); 
 
   rtc_clock.set_time(hours, minutes,0);
@@ -185,6 +185,6 @@ void modi_Uhrzeit(){
   to_display(1.5,10,10,rtc_clock.get_hours()+":"+rtc_clock.get_minutes());
   to_display(1.5,10,20,"MV - V 0.9");
   print_disp();
-
+  
 }
 
